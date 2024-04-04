@@ -76,7 +76,7 @@ if [ "$CSR_TYPE" = clients ]; then
     fi
 elif [ "$CSR_TYPE" = server ]; then
     # Retrieve the SAN by matching, grabbing the next line in the -text output, printing and quitting
-    CSR_CERT_SAN=$(openssl req -utf8 -in "$CSR_PATH" -noout -text | sed -n '/^[[:space:]]*X509v3 Subject Alternative Name:[[:space:]]*$/ {n;p;q}')
+    CSR_CERT_SAN=$(openssl req -utf8 -in "$CSR_PATH" -noout -text | sed -n '/^[[:space:]]*X509v3 Subject Alternative Name:[[:space:]]*$/ {n;p;q}'|sed 's/^ *//'|sed 's/IP Address:/IP:/g')
     if [ -z "$CSR_CERT_SAN" ]; then
         CSR_CERT_SAN="DNS:$CSR_CERT_CN"
     fi
